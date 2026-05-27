@@ -67,7 +67,7 @@ texRotulo.encoding = THREE.sRGBEncoding;
 texRotulo.wrapS = THREE.RepeatWrapping;
 texRotulo.wrapT = THREE.RepeatWrapping;
 texRotulo.repeat.set(1, 1);
-texRotulo.flipY = true;
+texRotulo.flipY = false;
 const texAlum   = criarTexturaAluminio();
 
 // MESA
@@ -140,8 +140,15 @@ const matTampa = new THREE.MeshStandardMaterial({
 });
 
 // 1. Corpo da lata com rótulo
+const geometriaCorpo = new THREE.CylinderGeometry(0.78, 0.78, 1.75, 72, 1, true);
+const uvCorpo = geometriaCorpo.attributes.uv;
+
+for (let i = 0; i < uvCorpo.count; i += 1) {
+  uvCorpo.setY(i, 1 - uvCorpo.getY(i));
+}
+
 const corpo = new THREE.Mesh(
-  new THREE.CylinderGeometry(0.78, 0.78, 1.75, 72, 1, true),
+  geometriaCorpo,
   matRotulo
 );
 corpo.castShadow = true;
